@@ -1,3 +1,9 @@
+# Image files
+*.png
+
+# Other
+other.txt
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
