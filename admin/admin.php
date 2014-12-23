@@ -5,7 +5,6 @@ function lolint_add_menu(){
 	$page = add_menu_page("LoL Integration" , "LoL Integration", "manage_options", "lolint", "lolint_admin", "", "42.314" );
 
 }
-
 add_action( 'admin_menu', 'lolint_add_menu' );
 
 function lolint_admin(){
@@ -144,6 +143,10 @@ function lolint_save_settings(){
 // Retrieve Static Data Function
 function lolint_get_static(){
 	global $wpdb;
+	
+	// Ensures the API Key is valid before running the function.
+	if ( LOLINT_VERSION == '' )
+		return 'Please enter a valid API Key and click Save Settings';
 		
 	// Input Champion Data
 	$lolint_getchampiondata = wp_remote_get(LOLINT_STATIC_DATA.'champion?api_key='.LOLINT_API_KEY);
@@ -178,6 +181,10 @@ function lolint_get_static(){
 // Update Icon Function
 function lolint_update_icons($type,$name=null){
 	global $wpdb;
+	
+	// Ensures the API Key is valid before running the function.
+	if ( LOLINT_VERSION == '' )
+		return 'Please enter a valid API Key and click Save Settings';
 	
 	// If name is null then pull names from database else just run the named icon
 	if ($name==null){

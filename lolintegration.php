@@ -88,9 +88,21 @@ class lolint {
 		
 		// Version
 		if ( ! defined( 'LOLINT_VERSION' ) ) {
-			$this->getversiondata = wp_remote_get(LOLINT_STATIC_DATA.'versions?api_key='.LOLINT_API_KEY);
-			$versionjson=json_decode($this->getversiondata['body'],'ASSOC_A');
-			define( 'LOLINT_VERSION', $versionjson[0] );
+			// Checks to see if an API Key has been entered.
+			if ( LOLINT_API_KEY != ''){
+				$this->getversiondata = wp_remote_get(LOLINT_STATIC_DATA.'versions?api_key='.LOLINT_API_KEY);
+				$versionjson=json_decode($this->getversiondata['body'],'ASSOC_A');
+				
+				// Checks to see if the result is bad meaning a bad API Key
+				if (isset($versionjson['status']['status_code'])){
+					define( 'LOLINT_VERSION', '' );
+				} else {
+					// If all is well then set the version allowing admin functions to work
+					define( 'LOLINT_VERSION', $versionjson[0] );
+				}
+			} else {
+				define( 'LOLINT_VERSION', '' );
+			}
 		}		
 		
 		// Plugin version
